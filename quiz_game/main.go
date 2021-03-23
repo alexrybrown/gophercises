@@ -15,6 +15,10 @@ func main() {
 		"csv",
 		"problems.csv",
 		"Provide path to csv with quiz questions and answers. Defaults to problems.csv.")
+	tFlag := flag.Int(
+		"t",
+		30,
+		"Provide amount of time for the quiz. Defaults to 30 seconds.")
 
 	flag.Parse()
 
@@ -32,6 +36,8 @@ func main() {
 		log.Fatal("Problems reading file: ", err)
 	}
 
+	correctAns := 0
+	totalQ := 0
 	for _, v := range lines {
 		q := v[0]
 		a := v[1]
@@ -43,9 +49,10 @@ func main() {
 			log.Fatal("Problem reading input: ", err)
 		}
 		if strings.TrimSpace(string(ans)) == a {
-			fmt.Println("Correct!")
-		} else {
-			fmt.Println("Wrong! " + string(ans) + " != " + a)
+			correctAns++
 		}
+		totalQ++
 	}
+
+	fmt.Println(fmt.Sprintf("%v/%v correct.", correctAns, totalQ))
 }
